@@ -9,7 +9,9 @@ export const signUpSchema = object({
 
 export const signInSchema = object({
   email: string({ required_error: "Please provide an email" }).email().trim(),
-  password: string({ required_error: "Please provide a password" }).trim(),
+  password: string({ required_error: "Please provide a password" })
+    .min(1, "Please provide a password")
+    .trim(),
 });
 
 export const deleteAccountSchema = object({
@@ -20,13 +22,7 @@ export const forgotPasswordSchema = object({
   email: string({ required_error: "Please provide an email" }).email().trim(),
 });
 
-export const passwordResetSchema = object({
+export const resetPasswordSchema = object({
   token: string({ required_error: "Please provide a token" }).trim(),
   password: string({ required_error: "Please provide a password" }).trim(),
-  passwordConfirm: string({
-    required_error: "Please confirm your password",
-  }).trim(),
-}).refine((data) => data.password === data.passwordConfirm, {
-  message: "Passwords do not match",
-  path: ["passwordConfirm"],
 });

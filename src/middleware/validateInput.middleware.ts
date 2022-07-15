@@ -10,7 +10,7 @@ export const validateInput =
       if (e instanceof ZodError) {
         res.status(400).send({ errors: e.flatten().fieldErrors });
       } else {
-        res.status(400).send({ errors: e });
+        res.sendStatus(400);
       }
     }
   };

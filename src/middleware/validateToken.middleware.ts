@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Secret, verify } from "jsonwebtoken";
+import { verify, VerifyErrors } from "jsonwebtoken";
 
 export const validateToken = async (
   req: Request | any,
@@ -7,24 +7,27 @@ export const validateToken = async (
   next: NextFunction
 ) => {
   try {
-    const authHeader: string = req.headers.authorization;
-    const token: string = authHeader && authHeader.split(" ")[1];
-    if (!token)
-      return res.status(401).send({ error: "You are not authorized." });
+    const authHeader: string =
+      req.headers.Authorization || req.headers.authorization;
+
+    if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) return res.sendStatus(401);
 
     verify(
       token,
-      process.env.ACCESS_TOKEN_SECRET as Secret,
-      (err, user: any) => {
-        if (err) {
-          res.clearCookie("token");
-          return res.status(403).send({ error: "Token is invalid." });
-        }
-        req.user = user;
+      process.env.ACCESS_TOKEN_SECRET as string,
+      (err: VerifyErrors | null, decoded: any) => {
+        if (err) return res.sendStatus(403);
+
+        req.user = decoded;
+
         next();
       }
     );
   } catch (e) {
-    res.status(400).send({ error: e });
+    res.sendStatus(400);
   }
 };
