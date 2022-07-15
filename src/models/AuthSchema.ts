@@ -23,6 +23,6 @@ export const forgotPasswordSchema = object({
 });
 
 export const resetPasswordSchema = object({
-  token: string({ required_error: "Please provide a token" }).trim(),
+  authToken: string({ required_error: "Please provide a token" }).trim(),
   password: string({ required_error: "Please provide a password" }).trim(),
 });

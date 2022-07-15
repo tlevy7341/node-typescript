@@ -21,8 +21,8 @@ export const resetPassword = async (req: Request, res: Response) => {
 
     await prisma.passwordReset.delete({ where: { token: authToken } });
 
-    res.status(200).send({ message: "Password has been reset." });
+    res.sendStatus(200);
   } catch (e) {
-    res.status(400).send({ error: e });
+    res.sendStatus(400);
   }
 };
