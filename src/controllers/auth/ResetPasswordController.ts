@@ -10,7 +10,10 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await prisma.passwordReset.findUnique({
       where: { token: authToken },
     });
-    if (!user) return res.sendStatus(403);
+    if (!user)
+      return res
+        .status(403)
+        .send("Something went wrong. Please try again later.");
 
     const newPassword = await generateHashedPassword(password);
 

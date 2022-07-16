@@ -11,10 +11,11 @@ export const signIn = async (req: Request, res: Response) => {
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
     });
-    if (!user) return res.sendStatus(401);
+    if (!user) return res.status(401).send("Invalid email or password");
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
-    if (!isCorrectPassword) return res.sendStatus(401);
+    if (!isCorrectPassword)
+      return res.status(401).send("Invalid email or password");
 
     //Extracting password and createdAt from user object so that I don't send it to the client
     const { password: _, createdAt: __, refreshToken: ___, ...userData } = user;

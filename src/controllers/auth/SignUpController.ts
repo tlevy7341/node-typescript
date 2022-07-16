@@ -21,9 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
-        res
-          .status(409)
-          .send({ error: "Email already exists. Please sign in." });
+        res.status(409).send("There was a problem. Please try again later.");
       }
     } else {
       res.sendStatus(400);

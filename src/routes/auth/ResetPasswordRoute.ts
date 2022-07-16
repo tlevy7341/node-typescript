@@ -5,7 +5,7 @@ import { resetPasswordSchema } from "../../models/AuthSchema";
 
 const resetPasswordRoute = express.Router();
 
-resetPasswordRoute.post(
+resetPasswordRoute.patch(
   "/reset-password",
   validateInput(resetPasswordSchema),
   resetPassword

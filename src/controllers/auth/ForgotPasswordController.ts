@@ -10,7 +10,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const { email }: { email: string } = req.body;
 
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.sendStatus(401);
+    // Sending a 204 for security reasons
+    if (!user) return res.sendStatus(204);
 
     const accessToken = await generateToken(
       user,
