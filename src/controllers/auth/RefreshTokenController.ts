@@ -24,7 +24,7 @@ export const refreshToken = async (req: Request, res: Response) => {
       accessToken,
       process.env.REFRESH_TOKEN_SECRET as string,
       async (err: VerifyErrors | null, decoded: any) => {
-        if (err || decoded.user.id !== userData.id) return res.sendStatus(403);
+        if (err || decoded.id !== userData.id) return res.sendStatus(403);
 
         const newAccessToken = await generateToken(
           userData,
@@ -39,7 +39,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         );
 
         await prisma.user.update({
-          where: { id: decoded.user.id },
+          where: { id: decoded.id },
           data: { refreshToken: newRefreshToken },
         });
 

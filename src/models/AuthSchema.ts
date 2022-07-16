@@ -24,3 +24,8 @@ export const resetPasswordSchema = object({
   authToken: string({ required_error: "Please provide a token" }).trim(),
   password: string({ required_error: "Please provide a password" }).trim(),
 });
+
+export const updateAvatarSchema = object({
+  avatar: string().min(1, "Please provide an avatar").trim(),
+  id: number({ required_error: "Please provide an id" }),
+});
